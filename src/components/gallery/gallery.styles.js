@@ -6,8 +6,8 @@ export const GalleryContainer = styled.div`
   top: 162.76px;
   left: 99px;
   right: 98.13px;
-  margin-left: -22.815px;
-  margin-right: -22.815px;
+  margin-left: -23px;
+  margin-right: -23px;
 `
 
 export const MasonryConainer = styled(Masonry)`
