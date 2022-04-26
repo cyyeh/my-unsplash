@@ -9,8 +9,7 @@ import {
 
 import MyUnsplashLogo from '../../images/my_unsplash_logo.svg'
 
-const Header = () => {
-
+const Header = ({ handleAddPhotoButtonClick }) => {
   return (
     <div>
       <Logo src={MyUnsplashLogo} alt="MyUnsplashLogo" />
@@ -20,7 +19,7 @@ const Header = () => {
         value=""
         placeholder="Search by name"
       />
-      <Button>
+      <Button onClick={handleAddPhotoButtonClick}>
         <span>Add a photo</span>
       </Button>
     </div>

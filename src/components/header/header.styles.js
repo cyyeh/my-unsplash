@@ -21,12 +21,15 @@ export const Searcher = styled.input`
   filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.1));
   border-radius: 12px;
 
+  text-indent: 56.36px;
+
   ::placeholder {
     position: absolute;
     width: 107px;
     height: 19px;
     left: 56.36px;
     top: 18px;
+    text-indent: 0px;
     
     font-family: 'Noto Sans';
     font-style: normal;
@@ -61,6 +64,8 @@ export const Button = styled.button`
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
   border: solid #3DB46D;
   border-radius: 12px;
+
+  cursor: pointer;
 
   > span {
     width: 97px;

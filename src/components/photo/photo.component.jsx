@@ -7,17 +7,17 @@ import {
   Label
 } from './photo.styles'
 
-const Photo = ({ name, url }) => {
-  const [hidden, setHidden] = useState(true)
+const Photo = ({ name, url, handleDeleteButtonClick }) => {
+  const [btnInfoHidden, setBtnInfoHidden] = useState(true)
 
   const handlePhotoOnMouseEnter = (e) => {
     e.preventDefault()
-    setHidden(false)
+    setBtnInfoHidden(false)
   }
 
   const handlePhotoOnMouseLeave = (e) => {
     e.preventDefault()
-    setHidden(true)
+    setBtnInfoHidden(true)
   }
 
   return (
@@ -29,12 +29,12 @@ const Photo = ({ name, url }) => {
         src={url}
         alt={name}
         loading='lazy'
-        dark={!hidden}
+        dark={!btnInfoHidden}
       />
-      <Button hidden={hidden}>
+      <Button hidden={btnInfoHidden} onClick={handleDeleteButtonClick}>
         delete
       </Button>
-      <Label hidden={hidden}>
+      <Label hidden={btnInfoHidden}>
         {name}
       </Label>
     </ImageContainer>
