@@ -8,10 +8,8 @@ import {
   AppContainer
 } from './App.styles'
 
-import FakePhotos from './fakePhotos'
-
 const App = () => {
-  const [photos, setPhotos] = useState(FakePhotos)
+  const [photos, setPhotos] = useState([])
   const [addPhotoDialogHidden, setAddPhotoDialogHidden] = useState(true)
   const [deletePhotoDialogHidden, setDeletePhotoDialogHidden] = useState(true)
   const [searchValue, setSearchValue] = useState('')
@@ -19,6 +17,23 @@ const App = () => {
   const [candidatePhotoIndex, setCandidatePhotoIndex] = useState(-1)
   const [newPhotoLabel, setNewPhotoLabel] = useState('')
   const [newPhotoUrl, setNewPhotoUrl] = useState('')
+
+  useEffect(() => {
+    const API_ENDPOINT = (
+      process.env.REACT_APP_DEV_MODE === '1' ?
+      'http://localhost:9999/.netlify/functions/get-photos' : 
+      `${document.location.origin}/.netlify/functions/get-photos`
+    )
+    fetch(API_ENDPOINT)
+      .then(response => response.json())
+      .then(function(data) {
+        console.log(data)
+        setPhotos(data)
+      })
+      .catch(function(error) {
+        console.error(error)
+      })
+  }, [])
 
   const handleSearcherValueChange = (e) => {
     setSearchValue(e.target.value)
@@ -32,6 +47,8 @@ const App = () => {
     setAddPhotoDialogHidden(true)
     setDeletePhotoDialogHidden(true)
     setPassword('')
+    setNewPhotoLabel('')
+    setNewPhotoUrl('')
   }
 
   const handleDeleteButtonClick = (index) => {
@@ -64,7 +81,6 @@ const App = () => {
   }
 
   const handleSubmitOKButtonClick = () => {
-    console.log(process.env.REACT_APP_DEV_MODE)
     const API_ENDPOINT = (
       process.env.REACT_APP_DEV_MODE === '1' ?
       'http://localhost:9999/.netlify/functions/upload-photo' : 
@@ -83,23 +99,15 @@ const App = () => {
       .then(response => response.json())
       .then(function(data) {
         console.log(data)
+        setAddPhotoDialogHidden(true)
+        setNewPhotoLabel('')
+        setNewPhotoUrl('')
+        setPhotos([data].concat(photos))
       })
       .catch(function(error) {
         console.error(error)
       })
   }
-
-  useEffect(() => {
-    if (searchValue) {
-      setPhotos(
-        photos.filter(
-          photo => photo.name.indexOf(searchValue) !== -1
-        )
-      )
-    } else {
-      setPhotos(FakePhotos)
-    }
-  }, [searchValue, photos])
 
   return (
     <AppContainer dark={!addPhotoDialogHidden && !deletePhotoDialogHidden}>
@@ -109,7 +117,9 @@ const App = () => {
         handleSearcherValueChange={handleSearcherValueChange}
       />
       <Gallery
-        photos={photos}
+        photos={photos.filter(
+          photo => photo.name.indexOf(searchValue) !== -1
+        )}
         handleDeleteButtonClick={handleDeleteButtonClick}
       />
       <Dialog 
