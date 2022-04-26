@@ -1,10 +1,16 @@
 import Header from './components/header/header.component'
+import Gallery from './components/gallery/gallery.component'
+
+import {
+  AppContainer
+} from './App.styles'
 
 const App = () => {
   return (
-    <div>
+    <AppContainer>
       <Header />
-    </div>
+      <Gallery />
+    </AppContainer>
   )
 }
 
