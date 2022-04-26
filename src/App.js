@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 import Header from './components/header/header.component'
 import Gallery from './components/gallery/gallery.component'
@@ -8,9 +8,17 @@ import {
   AppContainer
 } from './App.styles'
 
+import FakePhotos from './fakePhotos'
+
 const App = () => {
   const [addPhotoDialogHidden, setAddPhotoDialogHidden] = useState(true)
   const [deletePhotoDialogHidden, setDeletePhotoDialogHidden] = useState(true)
+  const [searchValue, setSearchValue] = useState('')
+  const [photos, setPhotos] = useState(FakePhotos)
+
+  const handleSearcherValueChange = (e) => {
+    setSearchValue(e.target.value)
+  }
 
   const handleAddPhotoButtonClick = () => {
     setAddPhotoDialogHidden(false)
@@ -25,12 +33,27 @@ const App = () => {
     setDeletePhotoDialogHidden(false)
   }
 
+  useEffect(() => {
+    if (searchValue) {
+      setPhotos(
+        FakePhotos.filter(
+          photo => photo.name.indexOf(searchValue) !== -1
+        )
+      )
+    } else {
+      setPhotos(FakePhotos)
+    }
+  }, [searchValue])
+
   return (
     <AppContainer dark={!addPhotoDialogHidden && !deletePhotoDialogHidden}>
-      <Header 
+      <Header
+        searchValue={searchValue}
         handleAddPhotoButtonClick={handleAddPhotoButtonClick}
+        handleSearcherValueChange={handleSearcherValueChange}
       />
-      <Gallery 
+      <Gallery
+        photos={photos}
         handleDeleteButtonClick={handleDeleteButtonClick}
       />
       <Dialog 

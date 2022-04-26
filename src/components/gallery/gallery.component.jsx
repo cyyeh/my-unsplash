@@ -5,14 +5,13 @@ import {
 
 import Photo from '../photo/photo.component'
 
-import FakePhotos from '../../fakePhotos'
 
-const Gallery = ({ handleDeleteButtonClick }) => {
+const Gallery = ({ photos, handleDeleteButtonClick }) => {
   return (
     <GalleryContainer>
       <MasonryConainer columns={3} spacing={5.75}>
         {
-          FakePhotos.map((photo, index) => (
+          photos.map((photo, index) => (
             <Photo
               key={index}
               name={photo.name}
