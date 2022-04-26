@@ -18,6 +18,7 @@ const Dialog = (
     inputs, 
     actionBtnData, 
     handleCancelButtonClick,
+    handleActionButtonClick,
   }
 ) => {
   return (
@@ -32,7 +33,8 @@ const Dialog = (
                 id={input.id}
                 type={input.type}
                 placeholder={input.placeholder}
-                value={input.value}  
+                value={input.value}
+                onChange={input.handleInputChange}
               />
             </div>
           ))}
@@ -42,7 +44,10 @@ const Dialog = (
         <CancelButton onClick={handleCancelButtonClick}>
           Cancel
         </CancelButton>
-        <ActionButton btnColor={actionBtnData.bgColor}>
+        <ActionButton
+          btnColor={actionBtnData.bgColor}
+          onClick={handleActionButtonClick}
+        >
           {actionBtnData.text}
         </ActionButton>
       </DialogActionsContainer>

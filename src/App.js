@@ -14,7 +14,9 @@ const App = () => {
   const [addPhotoDialogHidden, setAddPhotoDialogHidden] = useState(true)
   const [deletePhotoDialogHidden, setDeletePhotoDialogHidden] = useState(true)
   const [searchValue, setSearchValue] = useState('')
+  const [password, setPassword] = useState('')
   const [photos, setPhotos] = useState(FakePhotos)
+  const [candidatePhotoIndex, setCandidatePhotoIndex] = useState(-1)
 
   const handleSearcherValueChange = (e) => {
     setSearchValue(e.target.value)
@@ -27,23 +29,41 @@ const App = () => {
   const handleCancelButtonClick = () => {
     setAddPhotoDialogHidden(true)
     setDeletePhotoDialogHidden(true)
+    setPassword('')
   }
 
-  const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = (index) => {
     setDeletePhotoDialogHidden(false)
+    setCandidatePhotoIndex(index)
+  }
+
+  const handleDeleteOKButtonClick = () => {
+    if (password === 'P@ssw0rd') {
+      console.log(typeof(candidatePhotoIndex))
+      setDeletePhotoDialogHidden(true)
+      setPassword('')
+      setPhotos(
+        photos.splice(candidatePhotoIndex, 1)
+      )
+      setCandidatePhotoIndex(-1)
+    } 
+  }
+
+  const handlePasswordInputChange = (e) => {
+    setPassword(e.target.value)
   }
 
   useEffect(() => {
     if (searchValue) {
       setPhotos(
-        FakePhotos.filter(
+        photos.filter(
           photo => photo.name.indexOf(searchValue) !== -1
         )
       )
     } else {
       setPhotos(FakePhotos)
     }
-  }, [searchValue])
+  }, [searchValue, photos])
 
   return (
     <AppContainer dark={!addPhotoDialogHidden && !deletePhotoDialogHidden}>
@@ -66,14 +86,16 @@ const App = () => {
             'type': 'text',
             'id': 'label',
             'placeholder': 'Suspendisse elit massa',
-            'value': ''
+            'value': '',
+            'handleInputChange': null
           },
           {
             'label': 'Photo URL',
             'type': 'url',
             'id': 'photo-url',
             'placeholder': 'https://images.unsplash.com/photo-15843.jpg',
-            'value': ''
+            'value': '',
+            'handleInputChange': null
           }
         ]}
         actionBtnData={{
@@ -81,6 +103,7 @@ const App = () => {
           'text': 'Submit'
         }}
         handleCancelButtonClick={handleCancelButtonClick}
+        handleActionButtonClick={null}
       />
       <Dialog
         hidden={deletePhotoDialogHidden}
@@ -92,7 +115,8 @@ const App = () => {
             'type': 'password',
             'id': 'password',
             'placeholder': '***************',
-            'value': ''
+            'value': password,
+            'handleInputChange': handlePasswordInputChange,
           }
         ]}
         actionBtnData={{
@@ -100,6 +124,7 @@ const App = () => {
           'text': 'Delete'
         }}
         handleCancelButtonClick={handleCancelButtonClick}
+        handleActionButtonClick={handleDeleteOKButtonClick}
       />
     </AppContainer>
   )

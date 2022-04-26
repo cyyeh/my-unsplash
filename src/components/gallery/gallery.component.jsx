@@ -14,6 +14,7 @@ const Gallery = ({ photos, handleDeleteButtonClick }) => {
           photos.map((photo, index) => (
             <Photo
               key={index}
+              index={index}
               name={photo.name}
               url={photo.url}
               handleDeleteButtonClick={handleDeleteButtonClick}
