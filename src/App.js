@@ -64,6 +64,29 @@ const App = () => {
   }
 
   const handleSubmitOKButtonClick = () => {
+    console.log(process.env.REACT_APP_DEV_MODE)
+    const API_ENDPOINT = (
+      process.env.REACT_APP_DEV_MODE === '1' ?
+      'http://localhost:9999/.netlify/functions/upload-photo' : 
+      `${document.location.origin}/.netlify/functions/upload-photo`
+    )
+    fetch(
+      API_ENDPOINT,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          "name": newPhotoLabel,
+          "url": newPhotoUrl,
+        })
+      },
+    )
+      .then(response => response.json())
+      .then(function(data) {
+        console.log(data)
+      })
+      .catch(function(error) {
+        console.error(error)
+      })
   }
 
   useEffect(() => {

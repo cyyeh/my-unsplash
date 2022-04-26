@@ -14,6 +14,8 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "aws-sdk": "^2.1121.0",
+    "axios": "^0.27.1",
     "netlify-cli": "^10.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -26,8 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "netlify dev",
-    "deploy": "netlify deploy"
+    "fserve": "netlify functions:serve",
+    "deploy": "yarn build && netlify deploy"
   },
   "eslintConfig": {
     "extends": [
