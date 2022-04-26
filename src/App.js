@@ -11,12 +11,14 @@ import {
 import FakePhotos from './fakePhotos'
 
 const App = () => {
+  const [photos, setPhotos] = useState(FakePhotos)
   const [addPhotoDialogHidden, setAddPhotoDialogHidden] = useState(true)
   const [deletePhotoDialogHidden, setDeletePhotoDialogHidden] = useState(true)
   const [searchValue, setSearchValue] = useState('')
   const [password, setPassword] = useState('')
-  const [photos, setPhotos] = useState(FakePhotos)
   const [candidatePhotoIndex, setCandidatePhotoIndex] = useState(-1)
+  const [newPhotoLabel, setNewPhotoLabel] = useState('')
+  const [newPhotoUrl, setNewPhotoUrl] = useState('')
 
   const handleSearcherValueChange = (e) => {
     setSearchValue(e.target.value)
@@ -53,6 +55,17 @@ const App = () => {
     setPassword(e.target.value)
   }
 
+  const handlePhotoLabelInputChange = (e) => {
+    setNewPhotoLabel(e.target.value)
+  }
+
+  const handlePhotoUrlInputChange = (e) => {
+    setNewPhotoUrl(e.target.value)
+  }
+
+  const handleSubmitOKButtonClick = () => {
+  }
+
   useEffect(() => {
     if (searchValue) {
       setPhotos(
@@ -86,16 +99,16 @@ const App = () => {
             'type': 'text',
             'id': 'label',
             'placeholder': 'Suspendisse elit massa',
-            'value': '',
-            'handleInputChange': null
+            'value': newPhotoLabel,
+            'handleInputChange': handlePhotoLabelInputChange,
           },
           {
             'label': 'Photo URL',
             'type': 'url',
             'id': 'photo-url',
             'placeholder': 'https://images.unsplash.com/photo-15843.jpg',
-            'value': '',
-            'handleInputChange': null
+            'value': newPhotoUrl,
+            'handleInputChange': handlePhotoUrlInputChange,
           }
         ]}
         actionBtnData={{
@@ -103,7 +116,7 @@ const App = () => {
           'text': 'Submit'
         }}
         handleCancelButtonClick={handleCancelButtonClick}
-        handleActionButtonClick={null}
+        handleActionButtonClick={handleSubmitOKButtonClick}
       />
       <Dialog
         hidden={deletePhotoDialogHidden}
