@@ -17,6 +17,7 @@ const App = () => {
   const [candidatePhotoIndex, setCandidatePhotoIndex] = useState(-1)
   const [newPhotoLabel, setNewPhotoLabel] = useState('')
   const [newPhotoUrl, setNewPhotoUrl] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const getPhotos = () => {
     const API_ENDPOINT = (
@@ -67,6 +68,8 @@ const App = () => {
         'http://localhost:9999/.netlify/functions/delete-photo' : 
         `${document.location.origin}/.netlify/functions/delete-photo`
       )
+      setLoading(true)
+
       fetch(API_ENDPOINT, {
         method: 'DELETE',
         body: JSON.stringify({
@@ -77,12 +80,14 @@ const App = () => {
         .then(function(data) {
           console.log(data)
           setDeletePhotoDialogHidden(true)
+          setLoading(false)
           setPassword('')
           getPhotos()
           setCandidatePhotoIndex(-1)
         })
         .catch(function(error) {
           console.error(error)
+          setLoading(false)
         })
     } 
   }
@@ -105,6 +110,8 @@ const App = () => {
       'http://localhost:9999/.netlify/functions/upload-photo' : 
       `${document.location.origin}/.netlify/functions/upload-photo`
     )
+    setLoading(true)
+
     fetch(
       API_ENDPOINT,
       {
@@ -119,12 +126,14 @@ const App = () => {
       .then(function(data) {
         console.log(data)
         setAddPhotoDialogHidden(true)
+        setLoading(false)
         setNewPhotoLabel('')
         setNewPhotoUrl('')
         setPhotos([data].concat(photos))
       })
       .catch(function(error) {
         console.error(error)
+        setLoading(false)
       })
   }
 
@@ -163,6 +172,7 @@ const App = () => {
             'handleInputChange': handlePhotoUrlInputChange,
           }
         ]}
+        loading={loading}
         actionBtnData={{
           'bgColor': '#3DB46D',
           'text': 'Submit'
@@ -184,6 +194,7 @@ const App = () => {
             'handleInputChange': handlePasswordInputChange,
           }
         ]}
+        loading={loading}
         actionBtnData={{
           'bgColor': '#EB5757',
           'text': 'Delete'

@@ -117,7 +117,7 @@ export const CancelButton = styled.button`
   background: none;
   padding: 0px;
 
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 `
 
 export const ActionButton = styled.button`
@@ -139,5 +139,5 @@ export const ActionButton = styled.button`
   
   color: #FFFFFF;
 
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 `

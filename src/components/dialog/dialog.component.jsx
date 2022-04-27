@@ -15,7 +15,8 @@ const Dialog = (
     hidden, 
     title,
     height,
-    inputs, 
+    inputs,
+    loading,
     actionBtnData, 
     handleCancelButtonClick,
     handleActionButtonClick,
@@ -41,12 +42,16 @@ const Dialog = (
         </InputContainer>
       </DialogContentContainer>
       <DialogActionsContainer>
-        <CancelButton onClick={handleCancelButtonClick}>
+        <CancelButton
+          onClick={handleCancelButtonClick}
+          disabled={loading}
+        >
           Cancel
         </CancelButton>
         <ActionButton
           btnColor={actionBtnData.bgColor}
           onClick={handleActionButtonClick}
+          disabled={loading}
         >
           {actionBtnData.text}
         </ActionButton>
