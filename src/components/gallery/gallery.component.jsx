@@ -15,7 +15,7 @@ const Gallery = ({ photos, handleDeleteButtonClick }) => {
             <Photo
               key={index}
               index={index}
-              name={photo.name}
+              name={photo.label}
               url={photo.url}
               handleDeleteButtonClick={handleDeleteButtonClick}
             />

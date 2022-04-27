@@ -110,7 +110,7 @@ const App = () => {
       {
         method: 'POST',
         body: JSON.stringify({
-          "name": newPhotoLabel,
+          "label": newPhotoLabel,
           "url": newPhotoUrl,
         })
       },
@@ -137,7 +137,7 @@ const App = () => {
       />
       <Gallery
         photos={photos.filter(
-          photo => photo.name.indexOf(searchValue) !== -1
+          photo => photo.label.indexOf(searchValue) !== -1
         )}
         handleDeleteButtonClick={handleDeleteButtonClick}
       />

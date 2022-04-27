@@ -30,9 +30,11 @@ const getPhotosFromS3 = async () => {
         resolve({
           statusCode: 200,
           body: data.Contents.map(photo => {
+            const _photoSplit = photo.Key.split('.')
             return {
               "name": photo.Key,
-              "url": `http://${process.env.LINODE_OBJECT_STORAGE_BUCKET}.${process.env.LINODE_OBJECT_STORAGE_ENDPOINT}/${photo.Key}`
+              "url": `http://${process.env.LINODE_OBJECT_STORAGE_BUCKET}.${process.env.LINODE_OBJECT_STORAGE_ENDPOINT}/${photo.Key}`,
+              "label": _photoSplit.slice(0, _photoSplit.length - 1).join('.')
             }
           })
         })

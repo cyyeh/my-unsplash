@@ -13,14 +13,14 @@ const s3Client = new S3({
   })
 })
 
-const uploadFileToS3 = async (name, data, type) => {
+const uploadFileToS3 = async (fileName, data, type) => {
   const params = {
     Bucket: process.env.LINODE_OBJECT_STORAGE_BUCKET,
-    Key: `${name}.jpg`,
+    Key: fileName,
     Body: Buffer.from(data.replace(/^data:image\/\w+;base64,/, ""), 'base64'),
     ContentEncoding: 'base64',
     ACL: 'public-read',
-    ContentType: type
+    ContentType: type,
   }
 
   return new Promise((resolve, reject) => {
@@ -69,9 +69,10 @@ const handler = async (event) => {
   }
 
   try {
-    const { name, url } = JSON.parse(event.body)
+    const { label, url } = JSON.parse(event.body)
     const [data, type] = await transformUrlToImgData(url)
-    const response = await uploadFileToS3(name, data, type)
+    const fileName = `${label}.${type.split('/')[1]}`
+    const response = await uploadFileToS3(fileName, data, type)
     if (response.statusCode !== 200) {
       return {
         statusCode: response.statusCode,
@@ -88,7 +89,7 @@ const handler = async (event) => {
           ...CORS_HEADERS,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: name, url: response.body.Location })
+        body: JSON.stringify({ name: fileName, url: response.body.Location, label: label })
       }
     }
   } catch (error) {
