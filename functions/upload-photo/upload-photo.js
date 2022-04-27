@@ -56,6 +56,7 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers':
     'Origin, X-Requested-With, Content-Type, Accept',
+  'Access-Control-Allow-Methods': '*'
 }
 
 // Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method

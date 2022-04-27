@@ -18,7 +18,7 @@ const App = () => {
   const [newPhotoLabel, setNewPhotoLabel] = useState('')
   const [newPhotoUrl, setNewPhotoUrl] = useState('')
 
-  useEffect(() => {
+  const getPhotos = () => {
     const API_ENDPOINT = (
       process.env.REACT_APP_DEV_MODE === '1' ?
       'http://localhost:9999/.netlify/functions/get-photos' : 
@@ -33,6 +33,10 @@ const App = () => {
       .catch(function(error) {
         console.error(error)
       })
+  }
+
+  useEffect(() => {
+    getPhotos()
   }, [])
 
   const handleSearcherValueChange = (e) => {
@@ -58,13 +62,28 @@ const App = () => {
 
   const handleDeleteOKButtonClick = () => {
     if (password === 'P@ssw0rd') {
-      console.log(typeof(candidatePhotoIndex))
-      setDeletePhotoDialogHidden(true)
-      setPassword('')
-      setPhotos(
-        photos.splice(candidatePhotoIndex, 1)
+      const API_ENDPOINT = (
+        process.env.REACT_APP_DEV_MODE === '1' ?
+        'http://localhost:9999/.netlify/functions/delete-photo' : 
+        `${document.location.origin}/.netlify/functions/delete-photo`
       )
-      setCandidatePhotoIndex(-1)
+      fetch(API_ENDPOINT, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          'name': photos[candidatePhotoIndex].name
+        })
+      })
+        .then(response => response.json())
+        .then(function(data) {
+          console.log(data)
+          setDeletePhotoDialogHidden(true)
+          setPassword('')
+          getPhotos()
+          setCandidatePhotoIndex(-1)
+        })
+        .catch(function(error) {
+          console.error(error)
+        })
     } 
   }
 

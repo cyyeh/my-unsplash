@@ -12,7 +12,7 @@ const s3Client = new S3({
   })
 })
 
-const getPhotos = async () => {
+const getPhotosFromS3 = async () => {
   const params = {
     Bucket: process.env.LINODE_OBJECT_STORAGE_BUCKET,
   }
@@ -45,6 +45,7 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers':
     'Origin, X-Requested-With, Content-Type, Accept',
+  'Access-Control-Allow-Methods': '*'
 }
 
 // Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method
@@ -57,7 +58,7 @@ const handler = async (event) => {
   }
 
   try {
-    const response = await getPhotos()
+    const response = await getPhotosFromS3()
     if (response.statusCode !== 200) {
       return {
         statusCode: response.statusCode,
