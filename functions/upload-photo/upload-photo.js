@@ -3,19 +3,19 @@ const S3 = require('aws-sdk/clients/s3')
 const axios = require('axios')
 
 const s3Client = new S3({
-  region: process.env.LINODE_OBJECT_STORAGE_REGION,
-  endpoint: process.env.LINODE_OBJECT_STORAGE_ENDPOINT,
+  region: process.env.S3_REGION,
+  endpoint: process.env.S3_ENDPOINT,
   sslEnabled: false,
   s3ForcePathStyle: true,
   credentials: new Credentials({
-    accessKeyId: process.env.LINODE_OBJECT_STORAGE_ACCESS_KEY_ID,
-    secretAccessKey: process.env.LINODE_OBJECT_STORAGE_SECRET_ACCESS_KEY
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
   })
 })
 
 const uploadFileToS3 = async (fileName, data, type) => {
   const params = {
-    Bucket: process.env.LINODE_OBJECT_STORAGE_BUCKET,
+    Bucket: process.env.S3_BUCKET,
     Key: fileName,
     Body: Buffer.from(data.replace(/^data:image\/\w+;base64,/, ""), 'base64'),
     ContentEncoding: 'base64',
